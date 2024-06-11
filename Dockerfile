@@ -1,9 +1,14 @@
 FROM python:3
 
-RUN pip install --user -U nltk
-RUN pip install torch
-RUN pip install transformers
+# Install the required Python packages
+COPY requirements.txt ./
+RUN pip install --user -r requirements.txt
 
-COPY question_answering.py ./
+# set workdir
+WORKDIR /app
 
-ENTRYPOINT python3 question_answering.py
+# Copy the source code into the Docker container
+COPY src/ src/
+
+# Set the entry point for the Docker container
+ENTRYPOINT ["python3", "src", "question_answering.py"]
